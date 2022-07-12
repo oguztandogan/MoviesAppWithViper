@@ -7,6 +7,8 @@
 
 import Foundation
 
+typealias ListLoadingStateBlock = (ListLoadingState) -> Void
+
 final class MainScreenPresenter {
 
     // MARK: - Private properties -
@@ -15,6 +17,9 @@ final class MainScreenPresenter {
     private let formatter: MainScreenFormatterInterface
     private let interactor: MainScreenInteractorInterface
     private let wireframe: MainScreenWireframeInterface
+    
+    private let popularMoviesCallback = MoviesCallback()
+    private var listDataState: ListLoadingStateBlock?
 
     // MARK: - Lifecycle -
 
@@ -30,15 +35,28 @@ final class MainScreenPresenter {
         self.wireframe = wireframe
     }
     
-    private func retrievePopularMoviesList() {
-        interactor.getPopularMovies { [weak self] response in
-            self?.formatter.loadMoviesList(moviesList: response)
+    func getPopularMovies() {
+        popularMoviesCallback.commonResult(completion: datalistener)
+        interactor.fetchPopularMovies(callback: popularMoviesCallback)
+    }
+    
+    
+    private func listenerHandler(with result: Result<PopularMoviesResponseModel, BaseErrorResponse>) {
+                
+        switch result {
+        case .failure(let error):
+            print("error : \(error)")
+        case .success(let response):
+            formatter.setData(moviesList: response.results)
+            listDataState?(.done)
+            //listDataState?(externalRefresh)
         }
     }
     
-    private func handlePopularMoviesResponse() {
-        
+    private lazy var datalistener: (Result<PopularMoviesResponseModel, BaseErrorResponse>) -> Void = { [weak self] result in
+        self?.listenerHandler(with: result)
     }
+
 }
 
 // MARK: - Extensions -
@@ -46,10 +64,35 @@ final class MainScreenPresenter {
 extension MainScreenPresenter: MainScreenPresenterInterface {
     
     func viewDidLoad() {
-        retrievePopularMoviesList()
+        getPopularMovies()
     }
     
     func fetchRowData(index: Int) -> PopularMovieViewComponentData {
-        formatter.returnMovieData(index: index)
+        formatter.getData(at: index)!
     }
+    
+    func listenTableViewData(completion: @escaping ListLoadingStateBlock) {
+        listDataState = completion
+    }
+}
+
+extension MainScreenPresenter: PopularMoviesListComponentDelegate {
+    
+    
+    func getItemCount(in section: Int) -> Int {
+        return formatter.getNumberOfItems()
+    }
+
+    func getData(at index: Int) -> GenericDataProtocol? {
+        return formatter.getData(at: index)
+    }
+
+    func isLoadingCell(for index: Int) -> Bool {
+        return index >= formatter.getNumberOfItems()
+    }
+
+    func refreshCollectionView() {
+//        self.refreshData()
+    }
+
 }

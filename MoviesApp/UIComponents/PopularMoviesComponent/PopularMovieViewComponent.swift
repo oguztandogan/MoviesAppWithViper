@@ -15,7 +15,6 @@ class PopularMovieViewComponent: DataBaseComponentView<PopularMovieViewComponent
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 6
         view.clipsToBounds = true
-        view.backgroundColor = .white
         return view
     }()
     
@@ -24,7 +23,6 @@ class PopularMovieViewComponent: DataBaseComponentView<PopularMovieViewComponent
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 6
         view.clipsToBounds = true
-        view.backgroundColor = .white
         return view
     }()
     
@@ -39,12 +37,12 @@ class PopularMovieViewComponent: DataBaseComponentView<PopularMovieViewComponent
         let temp = UILabel()
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.textColor = .black
-        temp.text = " "
         temp.lineBreakMode = .byWordWrapping
+        temp.font = UIFont(name: "American Typewriter", size: 14)
+        temp.textColor = ColorAsset.violetCrayola.value
         temp.numberOfLines = 0
         temp.contentMode = .center
         temp.textAlignment = .left
-        temp.isHidden = true
         return temp
     }()
     
@@ -52,12 +50,13 @@ class PopularMovieViewComponent: DataBaseComponentView<PopularMovieViewComponent
         let temp = UILabel()
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.textColor = .black
-        temp.text = " "
         temp.lineBreakMode = .byWordWrapping
         temp.numberOfLines = 0
         temp.contentMode = .center
+        temp.font = UIFont(name: "American Typewriter", size: 10)
+        temp.textColor = ColorAsset.violetCrayola.value
+
         temp.textAlignment = .left
-        temp.isHidden = true
         return temp
     }()
     
@@ -65,12 +64,13 @@ class PopularMovieViewComponent: DataBaseComponentView<PopularMovieViewComponent
         let temp = UILabel()
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.textColor = .black
-        temp.text = " "
         temp.lineBreakMode = .byWordWrapping
         temp.numberOfLines = 0
         temp.contentMode = .center
+        temp.font = UIFont(name: "American Typewriter", size: 10)
+        temp.textColor = ColorAsset.violetCrayola.value
+
         temp.textAlignment = .left
-        temp.isHidden = true
         return temp
     }()
     
@@ -118,8 +118,11 @@ class PopularMovieViewComponent: DataBaseComponentView<PopularMovieViewComponent
     override func loadDataIntoViews() {
         super.loadDataIntoViews()
         
-        guard let data = returnData() else { return }
-        movieImageView.kf.setImage(with: data.movieImage)
+        guard let data = returnData(),
+              let imageUrlString = data.movieImage?.absoluteString else { return }
+        
+        let imageUrl = URL(string: BaseImageUrl.imageUrl.value + imageUrlString)
+        movieImageView.kf.setImage(with: imageUrl)
         movieTitle.text = data.movieTitleText
         movieGenre.text = data.movieGenreText
         movieRating.text = data.movieRatingText

@@ -9,10 +9,8 @@ import Foundation
 
 protocol PopularMoviesListComponentDelegate: AnyObject {
     
-    func getNumberOfSection() -> Int
     func getItemCount(in section: Int) -> Int
     func getData(at index: Int) -> GenericDataProtocol?
-    func getMoreData()
     func isLoadingCell(for index: Int) -> Bool
     func refreshCollectionView()
     

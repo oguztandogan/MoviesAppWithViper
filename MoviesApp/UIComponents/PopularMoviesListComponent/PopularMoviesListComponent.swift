@@ -14,7 +14,7 @@ class PopularMoviesListComponent: DataBaseComponentView<PopularMoviesListCompone
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = ColorAsset.persianPink.value
         tableView.delegate = self
         tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag
@@ -87,7 +87,7 @@ class PopularMoviesListComponent: DataBaseComponentView<PopularMoviesListCompone
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource -
 extension PopularMoviesListComponent: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return delegate?.getNumberOfSection() ?? 0
+        return delegate?.getItemCount(in: section) ?? 0
         
     }
     
@@ -102,6 +102,7 @@ extension PopularMoviesListComponent: UITableViewDelegate, UITableViewDataSource
             return cell
         }
     }
+
 }
 
 

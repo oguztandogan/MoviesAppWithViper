@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PopularMovieViewComponentData {
+class PopularMovieViewComponentData: GenericDataProtocol {
     
     private(set) var movieImage: URL?
     private(set) var movieTitleText: String?

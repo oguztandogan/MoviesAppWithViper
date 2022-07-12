@@ -8,22 +8,39 @@
 import UIKit
 
 final class MainScreenFormatter {
-    private var popularMoviesList: [PopularMovie] = []
+    private var popularMoviesList: PopularMoviesResponseModel!
+    private var popularMovie: [PopularMovie] = []
 }
 
 // MARK: - Extensions -
 
 extension MainScreenFormatter: MainScreenFormatterInterface {
     func loadMoviesList(moviesList: [PopularMovie]) {
-        popularMoviesList = moviesList
+        popularMovie = moviesList
     }
     
-    func returnMovieData(index: Int) -> PopularMovieViewComponentData {
-        let movieImage = URL(string: popularMoviesList[index].poster_path ?? "")
+    func setData(moviesList: [PopularMovie]) {
+        popularMovie = moviesList
+    }
+        
+    func getData(at index: Int) -> PopularMovieViewComponentData? {
+        guard index < popularMovie.count else {
+            return nil
+        }
+        let data = popularMovie[index]
+        let movieImage = URL(string: data.poster_path ?? "")
         let movieData = PopularMovieViewComponentData(movieImage: movieImage,
-                                                      movieTitleText: popularMoviesList[index].title,
+                                                      movieTitleText: data.title,
                                                       movieGenreText: "",
-                                                      movieRatingText: popularMoviesList[index].vote_average?.description)
+                                                      movieRatingText: data.vote_average?.description)
         return movieData
+    }
+    
+    func getRawData(at index: Int) -> PopularMovie {
+        return popularMovie[index]
+    }
+    
+    func getNumberOfItems() -> Int {
+        return popularMovie.count
     }
 }

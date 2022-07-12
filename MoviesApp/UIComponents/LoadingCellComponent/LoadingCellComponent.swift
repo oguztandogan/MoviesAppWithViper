@@ -23,7 +23,7 @@ class LoadingCellView: BaseTableViewCell {
         
         let indicator = UIActivityIndicatorView()
         indicator.translatesAutoresizingMaskIntoConstraints = false
-        indicator.style = .medium
+        indicator.style = .gray
         indicator.hidesWhenStopped = true
         
         contentView.addSubview(indicator)

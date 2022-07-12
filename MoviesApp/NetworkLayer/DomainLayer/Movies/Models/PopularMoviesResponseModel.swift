@@ -1,28 +1,29 @@
 //
-//  PopularMoviesResponseModel.swift
-//  MoviesApp
+//  GetBasicTokenResponseModel.swift
+//  MoveeWebService
 //
-//  Created by Oguz Tandogan on 10.07.2022.
+//  Created by Oguz Tandogan on 13.12.2020.
 //
 
 import Foundation
 
-class PopularMoviesResponseModel: Codable {
+open class PopularMoviesResponseModel: BaseResponseProtocol {
+    public var error: BaseErrorResponse?
     let results: [PopularMovie]
     
     init(results: [PopularMovie]) {
         self.results = results
     }
 }
-class PopularMovie: Codable {
+open class PopularMovie: Codable {
     
-    let poster_path: String?
-    let id: Int?
-    let title: String?
-    let vote_average: Double?
-    let overview: String?
-    let release_date: String?
-    let backdrop_path: String?
+    public let poster_path: String?
+    public let id: Int?
+    public let title: String?
+    public let vote_average: Double?
+    public let overview: String?
+    public let release_date: String?
+    public let backdrop_path: String?
 
     init(poster_path : String? , id: Int?, title : String?, vote_average : Double?, overview : String?, release_date : String?, backdrop_path: String?) {
     self.poster_path = poster_path

@@ -8,17 +8,8 @@
 import UIKit
 
 final class MainScreenViewController: UIViewController {
-        
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.genericRegisterCell(LoadingCellView.self)
-        tableView.genericRegisterCell(PopularMoviesTableViewCellComponent.self)
-        return tableView
-    }()
     
+    private var popularMoviesListComponent: PopularMoviesListComponent!
 
     // MARK: - Public properties -
 
@@ -29,34 +20,34 @@ final class MainScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.viewDidLoad()
+        loadView()
+        listenViewModelDataState()
     }
     
-//    override func loadView() {
-//        super.loadView()
-//        view.addSubview(tableView)
-//        NSLayoutConstraint.activate([
-//            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-//            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-//        
-//        ])
-//    }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        addPopularMoviesTableView()
-    }
-    
-    private func addPopularMoviesTableView() {
-        view.addSubview(tableView)
-        
+    override func loadView() {
+        super.loadView()
+        popularMoviesListComponent = PopularMoviesListComponent()
+        popularMoviesListComponent.translatesAutoresizingMaskIntoConstraints = false
+        popularMoviesListComponent.setupDelegation(with: presenter as! PopularMoviesListComponentDelegate)
+        view.addSubview(popularMoviesListComponent)
         NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        
+            popularMoviesListComponent.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            popularMoviesListComponent.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            popularMoviesListComponent.topAnchor.constraint(equalTo: view.topAnchor),
+            popularMoviesListComponent.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+
         ])
+    }
+    
+    private func listenViewModelDataState() {
+        presenter.listenTableViewData { [weak self] (state) in
+            switch state {
+            case .done:
+                self?.popularMoviesListComponent.reloadCollectionComponent()
+            case .loading:
+                break
+            }
+        }
     }
 
 }
@@ -64,17 +55,4 @@ final class MainScreenViewController: UIViewController {
 // MARK: - Extensions -
 
 extension MainScreenViewController: MainScreenViewInterface {
-}
-
-extension MainScreenViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: PopularMoviesTableViewCellComponent.identifier, for: indexPath) as? PopularMoviesTableViewCellComponent else { fatalError() }
-        cell.setRowData(data: presenter.fetchRowData(index: indexPath.row))
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
-    }
 }

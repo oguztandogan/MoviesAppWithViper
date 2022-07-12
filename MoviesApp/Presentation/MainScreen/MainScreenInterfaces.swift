@@ -16,14 +16,19 @@ protocol MainScreenViewInterface: ViewInterface {
 protocol MainScreenPresenterInterface: PresenterInterface {
     func viewDidLoad()
     func fetchRowData(index: Int) -> PopularMovieViewComponentData
+    func listenTableViewData(completion: @escaping ListLoadingStateBlock)
+    
 }
 
 protocol MainScreenFormatterInterface: FormatterInterface {
-    func loadMoviesList(moviesList: [PopularMovie])
-    func returnMovieData(index: Int) -> PopularMovieViewComponentData
+    func setData(moviesList: [PopularMovie])
+    func getRawData(at index: Int) -> PopularMovie
+    func getData(at index: Int) -> PopularMovieViewComponentData?
+    func getNumberOfItems() -> Int
     
 }
 
 protocol MainScreenInteractorInterface: InteractorInterface {
-    func getPopularMovies(completion: @escaping ([PopularMovie]) -> Void)
+    func fetchPopularMovies(callback: MoviesCallback)
+    
 }
