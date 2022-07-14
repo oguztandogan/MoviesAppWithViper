@@ -19,10 +19,4 @@ public class MoviesRepository: MoviesRepositoryInterface {
     public func getPopularMovies(params: PopularMoviesRequestModel) -> Single<PopularMoviesResponseModel> {
         return apiRemote.getPopularMovies(params: params)
     }
-//    public func getBasicToken(params: BasicTokenRequestModel) -> Single<LoginResponseModel> {
-//        return apiRemote.getBasicToken(params: params).flatMap { (basicTokenResponse) -> Single<LoginResponseModel> in
-////            self.tokenProvider = basictoken
-//            return self.apiRemote.getLoginToken(params: params)
-//        }
-//    }
 }

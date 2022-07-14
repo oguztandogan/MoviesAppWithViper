@@ -2,7 +2,7 @@
 //  BaseUseCase.swift
 //  MoveeWebService
 //
-//  Created by Hazal Eroglu on 13.12.2020.
+//  Created by Oguz Tandogan on 13.12.2020.
 //
 
 import Foundation

@@ -10,4 +10,5 @@ import Foundation
 enum ListLoadingState {
     case loading
     case done
+    case searching
 }

@@ -10,22 +10,20 @@ import Foundation
 typealias PathType = Endpoints.PathType
 typealias ApiKey = Endpoints.ApiKey
 typealias MoviesPaths = Endpoints.MoviesPaths
+typealias SearchPaths = Endpoints.SearchPaths
 typealias BaseImageUrl = Endpoints.ImageURL
 
 public enum Endpoints {
-        
+    
     public enum PathType: GenericValueProtocol {
         case tmdbBaseUrl
-        case tvShows
         
         public typealias Value = String
         
         public var value: String {
             switch self {
             case .tmdbBaseUrl:
-                return "https://api.themoviedb.org"
-            case .tvShows:
-                return "https://api.themoviedb.org/3/tv"
+                return "https://api.themoviedb.org/3"
             }
         }
     }
@@ -38,7 +36,7 @@ public enum Endpoints {
         public var value: String {
             switch self {
             case .apiKey:
-                return "?api_key=85f6ed635a992836f8ba2fd6fb5fa5cb"
+                return "85f6ed635a992836f8ba2fd6fb5fa5cb"
             }
         }
     }
@@ -52,16 +50,30 @@ public enum Endpoints {
         public var value: String {
             switch self {
             case .popularMovies:
-                return "/3/movie/popular"
+                return "/movie/popular"
             case .movieDetails:
                 return "/token/validate_with_login/?api_key=85f6ed635a992836f8ba2fd6fb5fa5cb"
             }
         }
     }
     
+    public enum SearchPaths: GenericValueProtocol {
+        public typealias Value = String
+        
+        case multipleSearch
+        
+        public var value: String {
+            switch self {
+            case .multipleSearch:
+                return "/search/multi"
+            }
+        }
+    }
+ 
+    
     public enum ImageURL: GenericValueProtocol {
         case imageUrl
-
+        
         public typealias Value = String
         
         public var value: String {
@@ -71,4 +83,4 @@ public enum Endpoints {
             }
         }
     }
-    }
+}

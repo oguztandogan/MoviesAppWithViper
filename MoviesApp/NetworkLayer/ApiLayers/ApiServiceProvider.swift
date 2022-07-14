@@ -34,7 +34,7 @@ public class ApiServiceProvider<T: CodableDataProtocol>: URLRequestConvertible {
     public func asURLRequest() throws -> URLRequest {
         var urlComponents = URLComponents(string: pathType.value)!
         urlComponents.queryItems = [
-            URLQueryItem(name: "api_key", value: "85f6ed635a992836f8ba2fd6fb5fa5cb"),
+            URLQueryItem(name: "api_key", value: ApiKey.apiKey.value),
         ]
         var url = try urlComponents.asURL()
         

@@ -8,20 +8,20 @@
 import UIKit
 import Kingfisher
 
-class PopularMovieViewComponent: DataBaseComponentView<PopularMovieViewComponentData> {
+class CellViewComponent: DataBaseComponentView<CellViewComponentData> {
     
     private lazy var containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 6
         view.clipsToBounds = true
+        view.backgroundColor = .white
         return view
     }()
     
     private lazy var stackView: UIStackView = {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 6
         view.clipsToBounds = true
         return view
     }()
@@ -36,7 +36,6 @@ class PopularMovieViewComponent: DataBaseComponentView<PopularMovieViewComponent
     private lazy var movieTitle: UILabel = {
         let temp = UILabel()
         temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.textColor = .black
         temp.lineBreakMode = .byWordWrapping
         temp.font = UIFont(name: "American Typewriter", size: 14)
         temp.textColor = ColorAsset.violetCrayola.value
@@ -49,13 +48,12 @@ class PopularMovieViewComponent: DataBaseComponentView<PopularMovieViewComponent
     private lazy var movieGenre: UILabel = {
         let temp = UILabel()
         temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.textColor = .black
         temp.lineBreakMode = .byWordWrapping
         temp.numberOfLines = 0
         temp.contentMode = .center
         temp.font = UIFont(name: "American Typewriter", size: 10)
         temp.textColor = ColorAsset.violetCrayola.value
-
+        temp.text = "deneme"
         temp.textAlignment = .left
         return temp
     }()
@@ -63,13 +61,11 @@ class PopularMovieViewComponent: DataBaseComponentView<PopularMovieViewComponent
     private lazy var movieRating: UILabel = {
         let temp = UILabel()
         temp.translatesAutoresizingMaskIntoConstraints = false
-        temp.textColor = .black
         temp.lineBreakMode = .byWordWrapping
         temp.numberOfLines = 0
         temp.contentMode = .center
         temp.font = UIFont(name: "American Typewriter", size: 10)
         temp.textColor = ColorAsset.violetCrayola.value
-
         temp.textAlignment = .left
         return temp
     }()
@@ -82,36 +78,38 @@ class PopularMovieViewComponent: DataBaseComponentView<PopularMovieViewComponent
     private func addComponents() {
         addSubview(containerView)
         containerView.addSubview(stackView)
-        stackView.addSubview(movieImageView)
+        containerView.addSubview(movieImageView)
         stackView.addSubview(movieTitle)
         stackView.addSubview(movieGenre)
         stackView.addSubview(movieRating)
         
         NSLayoutConstraint.activate([
             
-            containerView.topAnchor.constraint(equalTo: topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
             
-            stackView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            stackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
             stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10),
-            stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
+            stackView.leadingAnchor.constraint(equalTo: movieImageView.trailingAnchor, constant: 10),
             stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
             
-            movieImageView.topAnchor.constraint(equalTo: stackView.topAnchor),
-            movieImageView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
-            movieImageView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            movieImageView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            movieImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            movieImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            movieImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            movieImageView.widthAnchor.constraint(equalToConstant: 50),
+            movieImageView.heightAnchor.constraint(equalToConstant: 85),
             
-            movieTitle.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 10),
-            movieTitle.bottomAnchor.constraint(equalTo: movieRating.bottomAnchor, constant: -10),
-            movieTitle.leadingAnchor.constraint(equalTo: movieImageView.leadingAnchor, constant: 10),
+            movieTitle.topAnchor.constraint(equalTo: stackView.topAnchor),
+            movieTitle.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             
-            movieGenre.centerYAnchor.constraint(equalTo: movieRating.centerYAnchor),
-            movieGenre.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -10),
-            movieGenre.leadingAnchor.constraint(equalTo: movieImageView.leadingAnchor, constant: 10),
-            movieGenre.trailingAnchor.constraint(equalTo: movieRating.trailingAnchor, constant: -20),
+            movieRating.trailingAnchor.constraint(equalTo: movieGenre.leadingAnchor, constant: -100),
+            movieRating.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 5),
+            movieRating.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -5),
+            
+            movieGenre.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -5),
+            movieGenre.leadingAnchor.constraint(equalTo: movieRating.trailingAnchor, constant: 10),
         ])
     }
     
@@ -124,7 +122,7 @@ class PopularMovieViewComponent: DataBaseComponentView<PopularMovieViewComponent
         let imageUrl = URL(string: BaseImageUrl.imageUrl.value + imageUrlString)
         movieImageView.kf.setImage(with: imageUrl)
         movieTitle.text = data.movieTitleText
-        movieGenre.text = data.movieGenreText
+        movieGenre.text = "deneme"
         movieRating.text = data.movieRatingText
     }
 }

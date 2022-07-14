@@ -13,5 +13,6 @@ import SwinjectAutoregistration
 class UsecaseAssembly: Assembly {
     func assemble(container: Container) {
         container.autoregister(PopularMoviesUsecase.self, initializer: PopularMoviesUsecase.init).inObjectScope(.weak)
+        container.autoregister(MultipleSearchUsecase.self, initializer: MultipleSearchUsecase.init).inObjectScope(.weak)
     }
 }

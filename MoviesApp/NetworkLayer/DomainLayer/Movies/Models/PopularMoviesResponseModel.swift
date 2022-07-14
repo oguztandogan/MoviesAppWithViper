@@ -25,7 +25,13 @@ open class PopularMovie: Codable {
     public let release_date: String?
     public let backdrop_path: String?
 
-    init(poster_path : String? , id: Int?, title : String?, vote_average : Double?, overview : String?, release_date : String?, backdrop_path: String?) {
+    init(poster_path : String?,
+         id: Int?,
+         title: String?,
+         vote_average: Double?,
+         overview: String?,
+         release_date: String?,
+         backdrop_path: String?) {
     self.poster_path = poster_path
     self.id = id
     self.title = title

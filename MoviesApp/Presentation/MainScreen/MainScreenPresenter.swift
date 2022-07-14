@@ -19,7 +19,9 @@ final class MainScreenPresenter {
     private let wireframe: MainScreenWireframeInterface
     
     private let popularMoviesCallback = MoviesCallback()
+    private let searchResultsCallback = SearchCallback()
     private var listDataState: ListLoadingStateBlock?
+    private var isSearchingEnabled: Bool = false
 
     // MARK: - Lifecycle -
 
@@ -36,25 +38,45 @@ final class MainScreenPresenter {
     }
     
     func getPopularMovies() {
-        popularMoviesCallback.commonResult(completion: datalistener)
+        popularMoviesCallback.commonResult(completion: popularMoviesDatalistener)
         interactor.fetchPopularMovies(callback: popularMoviesCallback)
     }
     
     
-    private func listenerHandler(with result: Result<PopularMoviesResponseModel, BaseErrorResponse>) {
+    private func popularMoviesListenerHandler(with result: Result<PopularMoviesResponseModel, BaseErrorResponse>) {
                 
         switch result {
         case .failure(let error):
             print("error : \(error)")
         case .success(let response):
-            formatter.setData(moviesList: response.results)
+            formatter.setPopularMoviesData(moviesList: response.results)
             listDataState?(.done)
-            //listDataState?(externalRefresh)
         }
     }
     
-    private lazy var datalistener: (Result<PopularMoviesResponseModel, BaseErrorResponse>) -> Void = { [weak self] result in
-        self?.listenerHandler(with: result)
+    private lazy var popularMoviesDatalistener: (Result<PopularMoviesResponseModel, BaseErrorResponse>) -> Void = { [weak self] result in
+        self?.popularMoviesListenerHandler(with: result)
+    }
+    
+    func getSearchResults(searchText: String?) {
+        searchResultsCallback.commonResult(completion: searchResultsListenerHandler)
+        interactor.fetchSearchResults(callback: searchResultsCallback, params: SearchRequestModel(query: searchText))
+    }
+    
+    private func searchResultsListenerHandler(with result: Result<SearchResponseModel, BaseErrorResponse>) {
+                
+        switch result {
+        case .failure(let error):
+            print("error : \(error)")
+        case .success(let response):
+            formatter.setSearchResultsData(searchResults: response.results)
+            formatter.combineSearchResults()
+            listDataState?(.done)
+        }
+    }
+    
+    private lazy var searchResultsDatalistener: (Result<SearchResponseModel, BaseErrorResponse>) -> Void = { [weak self] result in
+        self?.searchResultsListenerHandler(with: result)
     }
 
 }
@@ -62,37 +84,75 @@ final class MainScreenPresenter {
 // MARK: - Extensions -
 
 extension MainScreenPresenter: MainScreenPresenterInterface {
+    func eraseTableViewData() {
+        formatter.eraseData()
+    }
+    
     
     func viewDidLoad() {
         getPopularMovies()
     }
     
-    func fetchRowData(index: Int) -> PopularMovieViewComponentData {
-        formatter.getData(at: index)!
+    func getHeaderTitle(section: Int) -> String? {
+        formatter.getHeaderTitle(section: section)
+    }
+    
+    func isSearchEnabled() -> Bool {
+        return isSearchingEnabled
     }
     
     func listenTableViewData(completion: @escaping ListLoadingStateBlock) {
         listDataState = completion
     }
-}
-
-extension MainScreenPresenter: PopularMoviesListComponentDelegate {
     
-    
-    func getItemCount(in section: Int) -> Int {
-        return formatter.getNumberOfItems()
+    func getItemCount(section: Int) -> Int {
+        return formatter.getNumberOfItems(isSearchingEnabled: isSearchingEnabled, section: section) ?? 0
     }
 
-    func getData(at index: Int) -> GenericDataProtocol? {
-        return formatter.getData(at: index)
+    func getData(at index: Int, section: Int?) -> GenericDataProtocol? {
+        return formatter.getData(at: index, section: section, isSearchingEnabled: isSearchingEnabled)
     }
 
     func isLoadingCell(for index: Int) -> Bool {
-        return index >= formatter.getNumberOfItems()
+        return index >= formatter.getNumberOfItems(isSearchingEnabled: isSearchingEnabled, section: 0) ?? 0
     }
 
     func refreshCollectionView() {
 //        self.refreshData()
     }
+    
+    func numberOfSections() -> Int {
+        return formatter.getNumberOfSections(isSearchingEnabled: isSearchingEnabled)
+    }
+    
+    func askData(index: Int, section: Int) -> GenericDataProtocol? {
+        return formatter.getData(at: index, section: section, isSearchingEnabled: isSearchingEnabled)
+    }
+}
 
+
+extension MainScreenPresenter: SearchBarComponentDelegate {
+
+    
+    func getSearchBarText(searchText: String) {
+        getSearchResults(searchText: searchText)
+    }
+    
+    func textBeginEditing(didSearchBarTapped: Bool) {
+        isSearchingEnabled = true
+//        listDataState?(.searching)
+//        eraseTableViewData()
+    }
+    
+    func textFinishedEditing() {
+        //isSearchingEnabled = false
+        isSearchingEnabled = true
+    }
+    
+    func cancelButtonClicked() {
+        listDataState?(.searching)
+        eraseTableViewData()
+        isSearchingEnabled = false
+        return getPopularMovies()
+    }
 }

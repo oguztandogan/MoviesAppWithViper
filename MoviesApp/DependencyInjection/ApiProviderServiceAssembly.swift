@@ -13,5 +13,7 @@ import SwinjectAutoregistration
 class ApiProviderServiceAssembly: Assembly {
     func assemble(container: Container) {
         container.autoregister(MoviesServices.self, initializer: MoviesServices.init).inObjectScope(.weak)
+        container.autoregister(SearchServices.self, initializer: SearchServices.init).inObjectScope(.weak)
+
     }
 }

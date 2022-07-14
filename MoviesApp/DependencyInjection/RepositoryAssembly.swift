@@ -13,5 +13,6 @@ import SwinjectAutoregistration
 class RepositoryAssembly: Assembly {
     func assemble(container: Container) {
         container.autoregister(MoviesRepositoryInterface.self, initializer: MoviesRepository.init).inObjectScope(.weak)
+        container.autoregister(SearchRepositoryInterface.self, initializer: SearchOperationsRepository.init).inObjectScope(.weak)
     }
 }
