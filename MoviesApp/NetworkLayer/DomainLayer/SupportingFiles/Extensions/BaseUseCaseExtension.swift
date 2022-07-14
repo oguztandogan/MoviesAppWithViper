@@ -9,8 +9,8 @@ import Foundation
 
 public extension BaseUseCase {
     
-    func listener(_ listener: UseCaseListener) -> Self {
-        self.setUseCaseListener(listener: listener)
-        return self
-    }
+//    func listener(_ listener: UseCaseListener) -> Self {
+//        self.setUseCaseListener(listener: listener)
+//        return self
+//    }
 }

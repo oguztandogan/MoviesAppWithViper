@@ -8,20 +8,32 @@
 import Foundation
 import RxSwift
 
-public class BaseUseCase<P, T>: BaseUseCaseInterface {
-
+public class BaseUseCase<P, T, R>: BaseUseCaseInterface {
+    
     private let disposeBag = DisposeBag()
-    public var useCaseListener: UseCaseListener? = nil
+    
+    var repository: R
+    var useCaseListener: UseCaseListener?
     
     typealias Parameters = P
     typealias Responses = T
     
-    func setUseCaseListener(listener: UseCaseListener) {
-        self.useCaseListener = listener
+    public init(repository: R,
+                useCaseListener: UseCaseListener?) {
+        self.repository = repository
+        self.useCaseListener = useCaseListener
     }
     
     func generateUseCase(parameter: P) -> T? {
         return nil
+    }
+    
+    func onPreExecute() {
+        useCaseListener?.onPreExecute()
+    }
+    
+    func onPostExecute() {
+        useCaseListener?.onPostExecute()
     }
     
     func addDisposable(disposable: Disposable?) {
@@ -29,11 +41,7 @@ public class BaseUseCase<P, T>: BaseUseCaseInterface {
             return
         }
         disposeBag.insert(disposable!)
-        print("disposeBag count : \(disposeBag)")
+
     }
     
-    deinit {
-        print("DEINIT BaseUseCase")
-    }
-
 }

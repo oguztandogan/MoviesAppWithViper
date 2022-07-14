@@ -143,4 +143,9 @@ extension MainScreenFormatter: MainScreenFormatterInterface {
     func getNumberOfItems(isSearchingEnabled: Bool,section: Int) -> Int? {
         return isSearchingEnabled ? combinedSearchResults?[section].count : popularMovie.count
     }
+    
+    func getLottieAnimationComponentData() -> LottieAnimationComponentData {
+        let data = LottieAnimationComponentData(animation: .movieCameraAnimation, animationSpeed: 1.5)
+        return data
+    }
 }

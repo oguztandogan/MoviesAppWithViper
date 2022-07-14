@@ -8,27 +8,22 @@
 import Foundation
 import RxSwift
 
-public class SingleUseCase<Params, T>: BaseUseCase<Params, Single<T>> {
+public class SingleUseCase<Request, Response, Repository>: BaseUseCase<Request, Single<Response>, Repository> {
     
-    public func execute(useCaseCallBack: UseCaseCallback<T>, params: Params) {
-        
-        useCaseListener?.useCasePreExecute()
-        
-        addDisposable(disposable: self.generateUseCase(parameter: params)?.subscribe(onSuccess: { [weak self](response) in
+    public func execute(useCaseCallBack: UseCaseCallback<Response>, params: Request) {
+        onPreExecute()
+        addDisposable(disposable: self.generateUseCase(parameter: params)?.subscribe(onSuccess: { (response) in
+            self.onPostExecute()
             useCaseCallBack.onSuccess(response: response)
-            self?.useCaseListener?.useCasePostExecute()
-        }, onFailure: { [weak self](error) in
-            self?.onErrorCondition(useCaseCallBack: useCaseCallBack, error: error)
-            self?.useCaseListener?.useCasePostExecute()
+        }, onFailure: { (error) in
+            self.onPostExecute()
+            self.onErrorCondition(useCaseCallBack: useCaseCallBack, error: error)
         }))
     }
     
-    private func onErrorCondition(useCaseCallBack: UseCaseCallback<T>, error: Error) {
-        guard let errorModule = error as? GenericErrorResponseModule, let error = errorModule.errorResponse else { return }
+    private func onErrorCondition(useCaseCallBack: UseCaseCallback<Response>, error: Error) {
+        guard let error = error as? BaseErrorResponse else { return }
         useCaseCallBack.onError(error: error)
     }
     
-    deinit {
-        print("DEINIT SingleUseCase")
-    }
 }

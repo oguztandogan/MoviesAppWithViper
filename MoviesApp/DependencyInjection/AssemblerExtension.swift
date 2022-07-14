@@ -13,6 +13,7 @@ extension Assembler {
     static let sharedAssembler: Assembler = {
         let container = Container()
         let assembler = Assembler([
+            ClientSideAssembly(),
             ManagerAssembly(),
             ApiRemoteAssembly(),
             RepositoryAssembly(),

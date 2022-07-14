@@ -9,8 +9,13 @@ import Foundation
 
 protocol  BaseUseCaseInterface {
     
+    var useCaseListener: UseCaseListener? { get }
+    
     associatedtype Parameters
     associatedtype Responses
     
     func generateUseCase(parameter: Parameters) -> Responses?
+    
+    func onPreExecute()
+    func onPostExecute()
 }

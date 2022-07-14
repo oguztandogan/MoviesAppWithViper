@@ -9,8 +9,8 @@ import Foundation
 
 public protocol UseCaseListener {
     
-    func useCasePreExecute()
+    func onPreExecute()
     
-    func useCasePostExecute()
+    func onPostExecute()
     
 }

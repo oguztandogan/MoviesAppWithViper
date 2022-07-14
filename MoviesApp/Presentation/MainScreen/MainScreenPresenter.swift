@@ -128,6 +128,9 @@ extension MainScreenPresenter: MainScreenPresenterInterface {
     func askData(index: Int, section: Int) -> GenericDataProtocol? {
         return formatter.getData(at: index, section: section, isSearchingEnabled: isSearchingEnabled)
     }
+    func getLottieAnimationComponentData() -> LottieAnimationComponentData {
+        return formatter.getLottieAnimationComponentData()
+    }
 }
 
 

@@ -11,12 +11,12 @@ target 'MoviesApp' do
 
   # Pods for MoviesApp
   pod 'Kingfisher'
-  #pod 'lottie-ios'
   pod 'RxSwift'
   pod 'Alamofire'
 pod 'Swinject'
 pod 'SwinjectAutoregistration'
-
+pod 'lottie-ios'
+pod 'RxCocoa'
 
   target 'MoviesAppTests' do
     inherit! :search_paths

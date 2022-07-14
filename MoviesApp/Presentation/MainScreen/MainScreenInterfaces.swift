@@ -24,6 +24,7 @@ protocol MainScreenPresenterInterface: PresenterInterface {
     func numberOfSections() -> Int
     func isSearchEnabled() -> Bool
     func getHeaderTitle(section: Int) -> String?
+    func getLottieAnimationComponentData() -> LottieAnimationComponentData
 }
 
 protocol MainScreenFormatterInterface: FormatterInterface {
@@ -38,6 +39,7 @@ protocol MainScreenFormatterInterface: FormatterInterface {
     func combineSearchResults() -> [[SearchResult]]?
     func eraseData()
     func getHeaderTitle(section: Int) -> String?
+    func getLottieAnimationComponentData() -> LottieAnimationComponentData
 }
 
 protocol MainScreenInteractorInterface: InteractorInterface {

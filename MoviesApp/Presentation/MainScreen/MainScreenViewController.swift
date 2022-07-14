@@ -10,6 +10,7 @@ import UIKit
 final class MainScreenViewController: UIViewController {
     
     private var searchBarComponent: SearchBarComponent!
+    private var lottieAnimationComponent: LottieAnimationComponent!
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -33,6 +34,7 @@ final class MainScreenViewController: UIViewController {
         super.loadView()
         addPopularMoviesTableView()
         addSearchBar()
+//        addLottieAnimationComponent()
         setupConstraints()
         tableView.reloadData()
     }
@@ -57,6 +59,12 @@ final class MainScreenViewController: UIViewController {
         view.addSubview(searchBarComponent)
     }
     
+    private func addLottieAnimationComponent() {
+        lottieAnimationComponent = LottieAnimationComponent(frame: .zero, data: presenter.getLottieAnimationComponentData())
+        lottieAnimationComponent.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(lottieAnimationComponent)
+    }
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -67,6 +75,12 @@ final class MainScreenViewController: UIViewController {
             searchBarComponent.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             searchBarComponent.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             searchBarComponent.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            
+//            lottieAnimationComponent.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            lottieAnimationComponent.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+//            lottieAnimationComponent.widthAnchor.constraint(equalToConstant: 100),
+//            lottieAnimationComponent.heightAnchor.constraint(equalToConstant: 100)
+
         ])
     }
     
