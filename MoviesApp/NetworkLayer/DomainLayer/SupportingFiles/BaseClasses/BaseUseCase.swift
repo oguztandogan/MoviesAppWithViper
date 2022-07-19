@@ -24,7 +24,7 @@ public class BaseUseCase<P, T, R>: BaseUseCaseInterface {
         self.useCaseListener = useCaseListener
     }
     
-    func generateUseCase(parameter: P) -> T? {
+    func generateUseCase(parameter: P, pathParameter: String? = "") -> T? {
         return nil
     }
     

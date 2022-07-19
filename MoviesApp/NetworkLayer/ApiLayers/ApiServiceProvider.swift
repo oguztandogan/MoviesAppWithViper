@@ -47,8 +47,20 @@ public class ApiServiceProvider<T: CodableDataProtocol>: URLRequestConvertible {
         request.headers = headers
         request.cachePolicy = .reloadIgnoringCacheData
         
-        return try encoding.encode(request, with: params)
+         return try encoding.encode(request, with: params)
         
+//        var url = try pathType.value.asURL()
+//        
+//        if let path = path {
+//            url = url.appendingPathComponent(path)
+//        }
+//         
+//        var request = URLRequest(url: url)
+//        request.httpMethod = method.rawValue
+//        request.headers = headers
+//        request.cachePolicy = .reloadIgnoringCacheData
+//        
+//        return try encoding.encode(request, with: params)
     }
     
     // MARK: - Encoding -

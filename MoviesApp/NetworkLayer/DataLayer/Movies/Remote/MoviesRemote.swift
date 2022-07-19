@@ -18,36 +18,23 @@ public class MoviesRemote: MoviesRemoteInterface {
         self.service = service
     }
 
-    // TODO
     public func getPopularMovies(params: PopularMoviesRequestModel) -> Single<PopularMoviesResponseModel> {
         return apiManager.executeRequest(urlRequestConvertible: service.getPopularMoviesParsedResultServiceModule(params: params))
+    }
+    
+    public func getMovieDetails(params: MovieDetailsRequestModel, movieId: String) -> Single<MovieDetailsResponseModel> {
+        return apiManager.executeRequest(urlRequestConvertible: service.getMovieDetailsParsedResultServiceModule(params: params, movieId: movieId))
+    }
+    
+    public func getMovieCast(params: MovieCastRequestModel, movieId: String) -> Single<MovieCastResponseModel> {
+        return apiManager.executeRequest(urlRequestConvertible: service.getMovieCastParsedResultServiceModule(params: params, movieId: movieId))
+    }
+
+    public func getVideo(params: VideoRequestModel, movieId: String) -> Single<VideoResponseModel> {
+        return apiManager.executeRequest(urlRequestConvertible: service.getVideoParsedResultServiceModule(params: params, movieId: movieId))
     }
 
     deinit {
         print("DEINIT LoginOperationsRemote")
     }
 }
-
-//public class BasicTokenOperationsRemote: BasicTokenOperationsRemoteInterface {
-//    public func getLoginToken(params: BasicTokenRequestModel) -> Single<LoginResponseModel> {
-//        return apiManager.executeRequest(urlRequestConvertible: service.getBasicTokenParsedResultServiceModule(params: params))
-//    }
-//
-//
-//        private let apiManager: HttpClientInterface!
-//        private let service: BasicTokenServices!
-//
-//        public init(apiManager: HttpClientInterface, service: BasicTokenServices) {
-//            self.apiManager = apiManager
-//            self.service = service
-//        }
-//
-//        // TODO
-//        public func getBasicToken(params: BasicTokenRequestModel) -> Single<BasicTokenResponseModel> {
-//            return apiManager.executeRequest(urlRequestConvertible: service.getBasicTokenParsedResultServiceModule(params: params))
-//        }
-//
-//        deinit {
-//            print("DEINIT LoginOperationsRemote")
-//        }
-//}

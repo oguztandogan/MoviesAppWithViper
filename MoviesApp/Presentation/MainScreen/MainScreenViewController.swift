@@ -7,17 +7,15 @@
 
 import UIKit
 
-final class MainScreenViewController: UIViewController {
+final class MainScreenViewController: BaseViewController {
     
     private var searchBarComponent: SearchBarComponent!
-    private var lottieAnimationComponent: LottieAnimationComponent!
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
     
-    var array = [["asdfasdfa","asdfasdfasd"],["1234123", "12341234123"]]
     // MARK: - Public properties -
     
     var presenter: MainScreenPresenterInterface!
@@ -34,7 +32,6 @@ final class MainScreenViewController: UIViewController {
         super.loadView()
         addPopularMoviesTableView()
         addSearchBar()
-//        addLottieAnimationComponent()
         setupConstraints()
         tableView.reloadData()
     }
@@ -47,6 +44,7 @@ final class MainScreenViewController: UIViewController {
         tableView.keyboardDismissMode = .onDrag
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
+        
         tableView.separatorStyle = .none
         tableView.genericRegisterCell(PopularMoviesTableViewCellComponent.self)
     }
@@ -59,12 +57,6 @@ final class MainScreenViewController: UIViewController {
         view.addSubview(searchBarComponent)
     }
     
-    private func addLottieAnimationComponent() {
-        lottieAnimationComponent = LottieAnimationComponent(frame: .zero, data: presenter.getLottieAnimationComponentData())
-        lottieAnimationComponent.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(lottieAnimationComponent)
-    }
-    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -74,13 +66,7 @@ final class MainScreenViewController: UIViewController {
             
             searchBarComponent.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             searchBarComponent.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            searchBarComponent.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            
-//            lottieAnimationComponent.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            lottieAnimationComponent.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-//            lottieAnimationComponent.widthAnchor.constraint(equalToConstant: 100),
-//            lottieAnimationComponent.heightAnchor.constraint(equalToConstant: 100)
-
+            searchBarComponent.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
     }
     
@@ -106,7 +92,6 @@ extension MainScreenViewController: MainScreenViewInterface {
 
 extension MainScreenViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("sections: \(section)")
         return presenter.getItemCount(section: section)
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -127,7 +112,10 @@ extension MainScreenViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         presenter.getHeaderTitle(section: section)
-
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.navigateToMovieDetailsScreen(index: indexPath.row)
     }
     
     

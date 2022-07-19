@@ -14,5 +14,12 @@ class UsecaseAssembly: Assembly {
     func assemble(container: Container) {
         container.autoregister(PopularMoviesUsecase.self, initializer: PopularMoviesUsecase.init).inObjectScope(.weak)
         container.autoregister(MultipleSearchUsecase.self, initializer: MultipleSearchUsecase.init).inObjectScope(.weak)
+        container.autoregister(MovieDetailsUsecase.self, initializer: MovieDetailsUsecase.init).inObjectScope(.weak)
+        container.autoregister(MovieCastUsecase.self, initializer: MovieCastUsecase.init).inObjectScope(.weak)
+        container.autoregister(PersonDetailsUsecase.self, initializer: PersonDetailsUsecase.init).inObjectScope(.weak)
+        container.autoregister(VideoUsecase.self, initializer: VideoUsecase.init).inObjectScope(.weak)
+        container.autoregister(MovieCreditsUsecase.self, initializer: MovieCreditsUsecase.init).inObjectScope(.weak)
+
+
     }
 }

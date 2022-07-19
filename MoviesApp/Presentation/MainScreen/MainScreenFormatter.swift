@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 final class MainScreenFormatter {
     private var popularMoviesList: PopularMoviesResponseModel!
@@ -14,7 +15,6 @@ final class MainScreenFormatter {
     private var searchedMoviesResults: [SearchResult] = []
     private var searchedPeopleResults: [SearchResult] = []
     private var combinedSearchResults: [[SearchResult]]? = [[]]
-    
 }
 
 // MARK: - Extensions -
@@ -35,7 +35,7 @@ extension MainScreenFormatter: MainScreenFormatterInterface {
         if !isSearchingEnabled {
             return getPopularMoviesData(index: index)
         } else {
-            return getSearchResultData(index: index, section: section ?? 1)
+            return getSearchResultData(index: index, section: section ?? 0)
         }
     }
     
@@ -60,13 +60,15 @@ extension MainScreenFormatter: MainScreenFormatterInterface {
         popularMovie.removeAll()
         searchedMoviesResults.removeAll()
         searchedPeopleResults.removeAll()
+        combinedSearchResults?.removeAll()
     }
     
     func getHeaderTitle(section: Int) -> String? {
-        if let searchResults = combinedSearchResults?[section] {
-            if section == 0 && !searchResults.isEmpty {
+        if let searchResults = combinedSearchResults,
+           !searchResults.isEmpty{
+            if section == 0 && !searchResults[section].isEmpty {
                 return "Movie"
-            } else if section == 1 && !searchResults.isEmpty {
+            } else if section == 1 && !searchResults[section].isEmpty {
                 return "People"
             }
         }
@@ -79,13 +81,21 @@ extension MainScreenFormatter: MainScreenFormatterInterface {
             return nil
         }
         if section == 0 {
+            if data.mediaType.rawValue == "media" {
             let searchImage = URL(string: data.posterPath ?? "")
             let searchData = CellViewComponentData(movieImage: searchImage,
                                                    movieTitleText: data.title,
                                                    movieGenreText: "",
                                                    movieRatingText: data.popularity?.description)
             return searchData
-            
+            } else {
+                let searchImage = URL(string: data.profilePath ?? "")
+                let searchData = CellViewComponentData(movieImage: searchImage,
+                                                       movieTitleText: data.name,
+                                                       movieGenreText: "",
+                                                       movieRatingText: data.popularity?.description)
+                return searchData
+            }
         } else {
             let searchImage = URL(string: data.profilePath ?? "")
             let searchData = CellViewComponentData(movieImage: searchImage,
@@ -97,17 +107,16 @@ extension MainScreenFormatter: MainScreenFormatterInterface {
         
     }
     
-    func combineSearchResults() -> [[SearchResult]]? {
+    
+    func combineSearchResults(){
         
         if !searchedMoviesResults.isEmpty {
             combinedSearchResults?.append(searchedMoviesResults)
-            
         }
         if !searchedPeopleResults.isEmpty {
             combinedSearchResults?.append(searchedPeopleResults)
-            
         }
-        return combinedSearchResults
+        print("deneme")
     }
     
     func getSearchedMoviesData(index: Int) -> CellViewComponentData? {
@@ -141,7 +150,16 @@ extension MainScreenFormatter: MainScreenFormatterInterface {
     }
     
     func getNumberOfItems(isSearchingEnabled: Bool,section: Int) -> Int? {
-        return isSearchingEnabled ? combinedSearchResults?[section].count : popularMovie.count
+        if let combinedSearchResults = combinedSearchResults,
+           isSearchingEnabled && !combinedSearchResults.isEmpty {
+            return combinedSearchResults[section].count
+        } else {
+            return popularMovie.count
+        }
+    }
+    
+    func getSelectecMovieId(index: Int) -> String? {
+        return popularMovie[index].id?.description
     }
     
     func getLottieAnimationComponentData() -> LottieAnimationComponentData {
@@ -149,3 +167,4 @@ extension MainScreenFormatter: MainScreenFormatterInterface {
         return data
     }
 }
+

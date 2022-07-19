@@ -10,7 +10,7 @@ import RxSwift
 
 public class MultipleSearchUsecase: SingleUseCase<SearchRequestModel, SearchResponseModel, SearchRepositoryInterface> {
     
-    override func generateUseCase(parameter: SearchRequestModel) -> Single<SearchResponseModel>? {
+    override func generateUseCase(parameter: SearchRequestModel, pathParameter: String?) -> Single<SearchResponseModel>? {
         return repository.getMultipleSearch(params: parameter)
 
     }

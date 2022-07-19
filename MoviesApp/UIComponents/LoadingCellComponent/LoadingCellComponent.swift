@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoadingCellView: BaseTableViewCell {
+class LoadingCellView: BaseCollectionViewCell {
 
     var activityIndicator: UIActivityIndicatorView!
     

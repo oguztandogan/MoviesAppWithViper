@@ -28,4 +28,15 @@ final class MainScreenWireframe: BaseWireframe<MainScreenViewController> {
 // MARK: - Extensions -
 
 extension MainScreenWireframe: MainScreenWireframeInterface {
+    
+    func navigate(option: MainScreenNavigationOptions) {
+        switch option {
+        case .movieDetails(let movieId):
+            presentMovieDetails(movieId: movieId)
+        }
+    }
+    
+    private func presentMovieDetails(movieId: String?) {
+        navigationController?.pushWireframe(MovieDetailsWireframe(movieId: movieId))
+    }
 }

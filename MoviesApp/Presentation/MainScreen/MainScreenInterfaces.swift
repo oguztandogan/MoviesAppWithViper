@@ -7,7 +7,12 @@
 
 import UIKit
 
+enum MainScreenNavigationOptions {
+    case movieDetails(String?)
+}
+
 protocol MainScreenWireframeInterface: WireframeInterface {
+    func navigate(option: MainScreenNavigationOptions)
 }
 
 protocol MainScreenViewInterface: ViewInterface {
@@ -25,6 +30,8 @@ protocol MainScreenPresenterInterface: PresenterInterface {
     func isSearchEnabled() -> Bool
     func getHeaderTitle(section: Int) -> String?
     func getLottieAnimationComponentData() -> LottieAnimationComponentData
+    func navigateToMovieDetailsScreen(index: Int)
+    
 }
 
 protocol MainScreenFormatterInterface: FormatterInterface {
@@ -36,14 +43,14 @@ protocol MainScreenFormatterInterface: FormatterInterface {
     func getSearchedMoviesData(index: Int) -> CellViewComponentData?
     func getSearchedPeopleData(index: Int) -> CellViewComponentData?
     func getNumberOfSections(isSearchingEnabled: Bool) -> Int
-    func combineSearchResults() -> [[SearchResult]]?
+    func combineSearchResults()
     func eraseData()
     func getHeaderTitle(section: Int) -> String?
     func getLottieAnimationComponentData() -> LottieAnimationComponentData
+    func getSelectecMovieId(index: Int) -> String?
 }
 
 protocol MainScreenInteractorInterface: InteractorInterface {
     func fetchPopularMovies(callback: MoviesCallback)
     func fetchSearchResults(callback: SearchCallback, params: SearchRequestModel)
-    
 }

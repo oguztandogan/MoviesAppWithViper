@@ -14,7 +14,7 @@ protocol  BaseUseCaseInterface {
     associatedtype Parameters
     associatedtype Responses
     
-    func generateUseCase(parameter: Parameters) -> Responses?
+    func generateUseCase(parameter: Parameters, pathParameter: String?) -> Responses?
     
     func onPreExecute()
     func onPostExecute()

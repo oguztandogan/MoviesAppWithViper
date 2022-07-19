@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import RxSwift
 
 class SearchBarComponent: DataBaseComponentView<SearchBarComponentData> {
     
@@ -15,15 +14,22 @@ class SearchBarComponent: DataBaseComponentView<SearchBarComponentData> {
     
     private var pendingRequestWorkItem: DispatchWorkItem?
     
-//    let disposeBag = DisposeBag()
-    
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.clipsToBounds = true
         searchBar.keyboardAppearance = .default
         searchBar.delegate = self
-        searchBar.showsCancelButton = true
+        searchBar.showsCancelButton = false
+        searchBar.backgroundColor = ColorAsset.russianViolet.value
+        searchBar.tintColor = ColorAsset.russianViolet.value
+        searchBar.barTintColor =  ColorAsset.persianPink.value
+        searchBar.placeholder = "Enter movie or person name"
+        let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideUISearchBar?.textColor = .darkGray
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue): UIColor.darkGray], for: .normal)
+        let labelInsideUISearchBar = textFieldInsideUISearchBar!.value(forKey: "placeholderLabel") as? UILabel
+        labelInsideUISearchBar?.textColor = .gray
         return searchBar
     }()
     func setupDelegation(with delegate: SearchBarComponentDelegate) {
@@ -56,7 +62,7 @@ extension SearchBarComponent: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         pendingRequestWorkItem?.cancel()
-        
+
         let requestWorkItem = DispatchWorkItem { [weak self] in
             self?.delegate?.getSearchBarText(searchText: searchText)
         }
@@ -66,14 +72,15 @@ extension SearchBarComponent: UISearchBarDelegate {
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        delegate?.textBeginEditing(didSearchBarTapped: true)
+        searchBar.showsCancelButton = true
     }
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        delegate?.textFinishedEditing()
-    }
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        delegate?.cancelButtonClicked()
-        
+        searchBar.resignFirstResponder()
+        searchBar.text = ""
+        searchBar.endEditing(true)
+        searchBar.showsCancelButton = false
     }
     
 }
+

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class PopularMoviesRequestModel: CodableDataProtocol {
+public class PersonDetailsRequestModel: CodableDataProtocol {
 
     public init() {}
 }

@@ -14,6 +14,7 @@ class ApiRemoteAssembly: Assembly {
     func assemble(container: Container) {
         container.autoregister(MoviesRemoteInterface.self, initializer: MoviesRemote.init).inObjectScope(.weak)
         container.autoregister(SearchRemoteInterface.self, initializer: SearchOperationsRemote.init).inObjectScope(.weak)
+        container.autoregister(PeopleRemoteInterface.self, initializer: PeopleOperationsRemote.init).inObjectScope(.weak)
 
     }
 }

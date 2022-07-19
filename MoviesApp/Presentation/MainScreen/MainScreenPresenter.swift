@@ -9,6 +9,7 @@ import Foundation
 
 typealias ListLoadingStateBlock = (ListLoadingState) -> Void
 
+
 final class MainScreenPresenter {
 
     // MARK: - Private properties -
@@ -37,7 +38,7 @@ final class MainScreenPresenter {
         self.wireframe = wireframe
     }
     
-    func getPopularMovies() {
+    private func getPopularMovies() {
         popularMoviesCallback.commonResult(completion: popularMoviesDatalistener)
         interactor.fetchPopularMovies(callback: popularMoviesCallback)
     }
@@ -58,7 +59,7 @@ final class MainScreenPresenter {
         self?.popularMoviesListenerHandler(with: result)
     }
     
-    func getSearchResults(searchText: String?) {
+    private func getSearchResults(searchText: String?) {
         searchResultsCallback.commonResult(completion: searchResultsListenerHandler)
         interactor.fetchSearchResults(callback: searchResultsCallback, params: SearchRequestModel(query: searchText))
     }
@@ -87,8 +88,6 @@ extension MainScreenPresenter: MainScreenPresenterInterface {
     func eraseTableViewData() {
         formatter.eraseData()
     }
-    
-    
     func viewDidLoad() {
         getPopularMovies()
     }
@@ -131,6 +130,11 @@ extension MainScreenPresenter: MainScreenPresenterInterface {
     func getLottieAnimationComponentData() -> LottieAnimationComponentData {
         return formatter.getLottieAnimationComponentData()
     }
+    
+    func navigateToMovieDetailsScreen(index: Int) {
+        let movieId = formatter.getSelectecMovieId(index: index)
+        wireframe.navigate(option: .movieDetails(movieId))
+    }
 }
 
 
@@ -138,24 +142,19 @@ extension MainScreenPresenter: SearchBarComponentDelegate {
 
     
     func getSearchBarText(searchText: String) {
+
         getSearchResults(searchText: searchText)
-    }
-    
-    func textBeginEditing(didSearchBarTapped: Bool) {
         isSearchingEnabled = true
-//        listDataState?(.searching)
-//        eraseTableViewData()
-    }
-    
-    func textFinishedEditing() {
-        //isSearchingEnabled = false
-        isSearchingEnabled = true
+        eraseTableViewData()
+        listDataState?(.done)
     }
     
     func cancelButtonClicked() {
         listDataState?(.searching)
         eraseTableViewData()
         isSearchingEnabled = false
-        return getPopularMovies()
+        getPopularMovies()
     }
 }
+
+

@@ -11,6 +11,7 @@ typealias PathType = Endpoints.PathType
 typealias ApiKey = Endpoints.ApiKey
 typealias MoviesPaths = Endpoints.MoviesPaths
 typealias SearchPaths = Endpoints.SearchPaths
+typealias PeoplePaths = Endpoints.PeoplePaths
 typealias BaseImageUrl = Endpoints.ImageURL
 
 public enum Endpoints {
@@ -45,14 +46,36 @@ public enum Endpoints {
         public typealias Value = String
         
         case popularMovies
-        case movieDetails
+        case movieDetails(String)
+        case castList(String)
+        case videos(String)
         
         public var value: String {
             switch self {
             case .popularMovies:
                 return "/movie/popular"
-            case .movieDetails:
-                return "/token/validate_with_login/?api_key=85f6ed635a992836f8ba2fd6fb5fa5cb"
+            case .movieDetails(let movieId):
+                return "/movie/\(movieId)"
+            case .castList(let movieId):
+                return "/movie/\(movieId)/credits"
+            case .videos(let movieId):
+                return "/movie/\(movieId)/videos"
+            }
+        }
+    }
+    
+    public enum PeoplePaths: GenericValueProtocol {
+        public typealias Value = String
+        
+        case movieCredits(String)
+        case personDetails(String)
+        
+        public var value: String {
+            switch self {
+            case .movieCredits(let personId):
+                return "/person/\(personId)/movie_credits"
+            case .personDetails(let personId):
+                return "/person/\(personId)"
             }
         }
     }

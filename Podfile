@@ -17,6 +17,7 @@ pod 'Swinject'
 pod 'SwinjectAutoregistration'
 pod 'lottie-ios'
 pod 'RxCocoa'
+pod 'youtube-ios-player-helper'
 
   target 'MoviesAppTests' do
     inherit! :search_paths

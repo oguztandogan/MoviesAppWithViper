@@ -10,7 +10,7 @@ import RxSwift
 
 public class PopularMoviesUsecase: SingleUseCase<PopularMoviesRequestModel, PopularMoviesResponseModel, MoviesRepositoryInterface> {
     
-    override func generateUseCase(parameter: PopularMoviesRequestModel) -> Single<PopularMoviesResponseModel>? {
+    override func generateUseCase(parameter: PopularMoviesRequestModel, pathParameter: String?) -> Single<PopularMoviesResponseModel>? {
         return repository.getPopularMovies(params: parameter)
 
     }

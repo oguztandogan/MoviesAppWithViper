@@ -11,4 +11,7 @@ import RxSwift
 public protocol MoviesRemoteInterface {
     
     func getPopularMovies(params: PopularMoviesRequestModel) -> Single<PopularMoviesResponseModel>
+    func getMovieDetails(params: MovieDetailsRequestModel, movieId: String) -> Single<MovieDetailsResponseModel>
+    func getMovieCast(params: MovieCastRequestModel, movieId: String) -> Single<MovieCastResponseModel>
+    func getVideo(params: VideoRequestModel, movieId: String) -> Single<VideoResponseModel>
 }

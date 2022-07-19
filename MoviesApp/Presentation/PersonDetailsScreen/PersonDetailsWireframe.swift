@@ -13,13 +13,13 @@ final class PersonDetailsWireframe: BaseWireframe<PersonDetailsViewController> {
 
     // MARK: - Module setup -
 
-    init() {
+    init(personId: String?) {
         let moduleViewController = PersonDetailsViewController()
         super.init(viewController: moduleViewController)
 
         let formatter = PersonDetailsFormatter()
         let interactor = PersonDetailsInteractor()
-        let presenter = PersonDetailsPresenter(view: moduleViewController, formatter: formatter, interactor: interactor, wireframe: self)
+        let presenter = PersonDetailsPresenter(personId: personId, view: moduleViewController, formatter: formatter, interactor: interactor, wireframe: self)
         moduleViewController.presenter = presenter
     }
 
@@ -28,4 +28,14 @@ final class PersonDetailsWireframe: BaseWireframe<PersonDetailsViewController> {
 // MARK: - Extensions -
 
 extension PersonDetailsWireframe: PersonDetailsWireframeInterface {
+    func navigate(option: PersonDetailsNavigationOptions) {
+        switch option {
+        case .movieDetails(let movieId):
+            presentMovieDetails(movieId: movieId)
+        }
+    }
+    
+    private func presentMovieDetails(movieId: String?) {
+        navigationController?.pushWireframe(MovieDetailsWireframe(movieId: movieId))
+    }
 }

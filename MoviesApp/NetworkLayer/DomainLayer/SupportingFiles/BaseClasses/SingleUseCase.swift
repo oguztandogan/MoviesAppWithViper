@@ -10,9 +10,9 @@ import RxSwift
 
 public class SingleUseCase<Request, Response, Repository>: BaseUseCase<Request, Single<Response>, Repository> {
     
-    public func execute(useCaseCallBack: UseCaseCallback<Response>, params: Request) {
+    public func execute(useCaseCallBack: UseCaseCallback<Response>, params: Request, pathParameter: String? = "") {
         onPreExecute()
-        addDisposable(disposable: self.generateUseCase(parameter: params)?.subscribe(onSuccess: { (response) in
+        addDisposable(disposable: self.generateUseCase(parameter: params, pathParameter: pathParameter)?.subscribe(onSuccess: { (response) in
             self.onPostExecute()
             useCaseCallBack.onSuccess(response: response)
         }, onFailure: { (error) in

@@ -10,6 +10,7 @@ import Foundation
 final class MainScreenInteractor: AssemblerWireframeInteractorProtocol {
     private var popularMoviesUsecase: PopularMoviesUsecase?
     private var multipleSearchUsecase: MultipleSearchUsecase?
+    private var moviedetailsUsecase: MovieDetailsUsecase?
 }
 
 // MARK: - Extensions -
@@ -25,4 +26,6 @@ extension MainScreenInteractor: MainScreenInteractorInterface {
         self.multipleSearchUsecase = self.returnResolver().resolve(MultipleSearchUsecase.self)
         self.multipleSearchUsecase?.execute(useCaseCallBack: callback, params: params)
     }
+
+    
 }
