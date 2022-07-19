@@ -45,7 +45,6 @@ extension PersonDetailsFormatter: PersonDetailsFormatterInterface {
         let movieImage = URL(string: data.posterPath ?? "")
         return CellViewComponentData(movieImage: movieImage,
                                      movieTitleText: movieCreditsModel[index].title,
-                                     movieGenreText: movieCreditsModel[index].releaseDate,
                                      movieRatingText: movieCreditsModel[index].voteAverage?.description)
     }
     

@@ -16,8 +16,8 @@ class MovieDetailsViewComponent: DataBaseComponentView<MovieDetailsViewComponent
         return temp
     }()
     
-    private lazy var imageView: ImageViewComponent = {
-        let imageView = ImageViewComponent()
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -30,7 +30,6 @@ class MovieDetailsViewComponent: DataBaseComponentView<MovieDetailsViewComponent
         title.isHighlighted = true
         title.textColor = ColorAsset.russianViolet.value
         title.numberOfLines = 0
-        title.contentMode = .center
         title.textAlignment = .left
         return title
     }()
@@ -42,7 +41,6 @@ class MovieDetailsViewComponent: DataBaseComponentView<MovieDetailsViewComponent
         summary.font = UIFont(name: "American Typewriter", size: 18)
         summary.textColor = ColorAsset.russianViolet.value
         summary.numberOfLines = 0
-        summary.contentMode = .center
         summary.textAlignment = .left
         return summary
     }()
@@ -54,7 +52,6 @@ class MovieDetailsViewComponent: DataBaseComponentView<MovieDetailsViewComponent
         rating.textColor = ColorAsset.russianViolet.value
         rating.numberOfLines = 0
         rating.text = "Rating: "
-        rating.contentMode = .center
         rating.textAlignment = .left
         return rating
     }()
@@ -66,12 +63,9 @@ class MovieDetailsViewComponent: DataBaseComponentView<MovieDetailsViewComponent
         rating.font = UIFont(name: "American Typewriter", size: 18)
         rating.textColor = ColorAsset.russianViolet.value
         rating.numberOfLines = 0
-        rating.contentMode = .center
         rating.textAlignment = .left
         return rating
     }()
-    
-    
     
     override func addMajorViews() {
         super.addMajorViews()
@@ -99,7 +93,6 @@ class MovieDetailsViewComponent: DataBaseComponentView<MovieDetailsViewComponent
             
             movieTitle.bottomAnchor.constraint(equalTo: summary.topAnchor, constant: -10),
             movieTitle.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
-            movieTitle.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
             
             summary.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
             summary.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
@@ -109,15 +102,17 @@ class MovieDetailsViewComponent: DataBaseComponentView<MovieDetailsViewComponent
             
             ratingLabel.centerYAnchor.constraint(equalTo: ratingAverage.centerYAnchor),
             ratingLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
-
-            
+            ratingLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
         ])
     }
     
     override func loadDataIntoViews() {
         super.loadDataIntoViews()
-        guard let data = returnData() else { return }
-        imageView.setData(data: data.imageViewData)
+        guard let data = returnData(),
+              let imageUrlString = data.imageViewData else { return }
+        
+        let imageUrl = URL(string: BaseImageUrl.imageUrl.value + imageUrlString)
+        imageView.kf.setImage(with: imageUrl)
         movieTitle.text = data.movieTitle
         summary.text = data.summary
         ratingAverage.text = data.rating

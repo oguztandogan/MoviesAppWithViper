@@ -10,12 +10,12 @@ import UIKit
 
 class MovieDetailsViewComponentData: GenericDataProtocol {
     
-    var imageViewData: ImageViewComponentData?
+    var imageViewData: String?
     var movieTitle: String?
     var summary: String?
     var rating: String?
     
-    init(imageViewData: ImageViewComponentData?,
+    init(imageViewData: String?,
          movieTitle:String?,
          summary: String?,
          rating: String?) {

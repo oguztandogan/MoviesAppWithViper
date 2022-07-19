@@ -33,7 +33,6 @@ final class MainScreenViewController: BaseViewController {
         addPopularMoviesTableView()
         addSearchBar()
         setupConstraints()
-        tableView.reloadData()
     }
     
     private func addPopularMoviesTableView() {
@@ -44,7 +43,6 @@ final class MainScreenViewController: BaseViewController {
         tableView.keyboardDismissMode = .onDrag
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
-        
         tableView.separatorStyle = .none
         tableView.genericRegisterCell(PopularMoviesTableViewCellComponent.self)
     }

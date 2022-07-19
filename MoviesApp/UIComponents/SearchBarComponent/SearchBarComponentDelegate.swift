@@ -11,5 +11,7 @@ import UIKit
 protocol SearchBarComponentDelegate: AnyObject {
     
     func getSearchBarText(searchText: String)
+    func textBeginEditing(didSearchBarTapped: Bool)
+    func textFinishedEditing()
     func cancelButtonClicked()
 }

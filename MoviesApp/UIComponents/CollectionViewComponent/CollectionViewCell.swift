@@ -15,8 +15,8 @@ class CollectionViewCell: GenericCollectionViewCell<CollectionViewCellViewCompon
     }
     
     func setViewConfigurations() {
-        backgroundColor = .white
-        contentView.backgroundColor = .white
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
     }
     
 }

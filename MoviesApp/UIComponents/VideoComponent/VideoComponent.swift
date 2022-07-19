@@ -48,6 +48,9 @@ class VideoComponent: DataBaseComponentView<VideoComponentData> {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             
+//            videoView.heightAnchor.constraint(equalTo: videoView.widthAnchor, multiplier: 9/16),
+
+            
         ])
     }
     

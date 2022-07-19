@@ -70,17 +70,23 @@ extension SearchBarComponent: UISearchBarDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250),
                                       execute: requestWorkItem)
     }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.showsCancelButton = true
-    }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         searchBar.text = ""
         searchBar.endEditing(true)
         searchBar.showsCancelButton = false
+        delegate?.cancelButtonClicked()
     }
     
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        delegate?.textBeginEditing(didSearchBarTapped: true)
+        searchBar.showsCancelButton = true
+
+    }
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        delegate?.textFinishedEditing()
+//        searchBar.showsCancelButton = true
+    }
 }
 

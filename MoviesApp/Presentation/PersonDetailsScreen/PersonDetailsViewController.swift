@@ -10,8 +10,6 @@ import UIKit
 
 final class PersonDetailsViewController: UIViewController {
     
-//    private var knownForMoviesCollectionViewComponent: KnownForCollectionViewComponent!
-
     // MARK: - Public properties -
 
     var presenter: PersonDetailsPresenterInterface!
@@ -21,8 +19,8 @@ final class PersonDetailsViewController: UIViewController {
     
     private var personDetailsComponent: PersonDetailsViewComponent!
     
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+    private lazy var tableView: IntrinsicResizingTableView = {
+        let tableView = IntrinsicResizingTableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -72,6 +70,11 @@ final class PersonDetailsViewController: UIViewController {
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
         tableView.separatorStyle = .none
+        tableView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        tableView.estimatedRowHeight = 85
+        tableView.rowHeight = 85
+        tableView.invalidateIntrinsicContentSize()
+        tableView.layoutIfNeeded()
         tableView.genericRegisterCell(PopularMoviesTableViewCellComponent.self)
     }
     
@@ -81,36 +84,32 @@ final class PersonDetailsViewController: UIViewController {
         scrollView.backgroundColor = ColorAsset.persianPink.value
         containerView.backgroundColor = ColorAsset.persianPink.value
         view.addSubview(scrollView)
-        scrollView.layoutIfNeeded()
         scrollView.isScrollEnabled = true
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 2000)
+//        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 2000)
         scrollView.addSubview(containerView)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            scrollView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            containerView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            containerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             containerView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            containerView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
+            containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            personDetailsComponent.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            personDetailsComponent.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            personDetailsComponent.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             personDetailsComponent.topAnchor.constraint(equalTo: containerView.topAnchor),
-            personDetailsComponent.widthAnchor.constraint(equalTo: containerView.widthAnchor),
-            personDetailsComponent.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            personDetailsComponent.heightAnchor.constraint(equalToConstant: 1050),
+            personDetailsComponent.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: -25),
             
-            tableView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            tableView.topAnchor.constraint(equalTo: personDetailsComponent.bottomAnchor, constant: -10),
-            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
-//            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-
+            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
         ])
     }
     
@@ -164,4 +163,18 @@ extension PersonDetailsViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     
+}
+
+class IntrinsicResizingTableView: UITableView {
+
+override var contentSize:CGSize {
+    didSet {
+        self.invalidateIntrinsicContentSize()
+    }
+}
+
+override var intrinsicContentSize: CGSize {
+    self.layoutIfNeeded()
+    return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
+}
 }

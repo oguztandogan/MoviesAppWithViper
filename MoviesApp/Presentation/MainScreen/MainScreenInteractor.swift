@@ -10,7 +10,6 @@ import Foundation
 final class MainScreenInteractor: AssemblerWireframeInteractorProtocol {
     private var popularMoviesUsecase: PopularMoviesUsecase?
     private var multipleSearchUsecase: MultipleSearchUsecase?
-    private var moviedetailsUsecase: MovieDetailsUsecase?
 }
 
 // MARK: - Extensions -

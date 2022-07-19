@@ -47,7 +47,6 @@ extension MainScreenFormatter: MainScreenFormatterInterface {
         let movieImage = URL(string: data.poster_path ?? "")
         let movieData = CellViewComponentData(movieImage: movieImage,
                                               movieTitleText: data.title,
-                                              movieGenreText: "",
                                               movieRatingText: data.vote_average?.description)
         return movieData
     }
@@ -81,18 +80,16 @@ extension MainScreenFormatter: MainScreenFormatterInterface {
             return nil
         }
         if section == 0 {
-            if data.mediaType.rawValue == "media" {
+            if data.mediaType.rawValue == "movie" {
             let searchImage = URL(string: data.posterPath ?? "")
             let searchData = CellViewComponentData(movieImage: searchImage,
                                                    movieTitleText: data.title,
-                                                   movieGenreText: "",
                                                    movieRatingText: data.popularity?.description)
             return searchData
             } else {
                 let searchImage = URL(string: data.profilePath ?? "")
                 let searchData = CellViewComponentData(movieImage: searchImage,
                                                        movieTitleText: data.name,
-                                                       movieGenreText: "",
                                                        movieRatingText: data.popularity?.description)
                 return searchData
             }
@@ -100,7 +97,6 @@ extension MainScreenFormatter: MainScreenFormatterInterface {
             let searchImage = URL(string: data.profilePath ?? "")
             let searchData = CellViewComponentData(movieImage: searchImage,
                                                    movieTitleText: data.name,
-                                                   movieGenreText: "",
                                                    movieRatingText: data.popularity?.description)
             return searchData
         }
@@ -116,37 +112,6 @@ extension MainScreenFormatter: MainScreenFormatterInterface {
         if !searchedPeopleResults.isEmpty {
             combinedSearchResults?.append(searchedPeopleResults)
         }
-        print("deneme")
-    }
-    
-    func getSearchedMoviesData(index: Int) -> CellViewComponentData? {
-        guard index < searchedMoviesResults.count else {
-            return nil
-        }
-        let data = searchedMoviesResults[index]
-        let movieImage = URL(string: data.posterPath ?? "")
-        let movieData = CellViewComponentData(movieImage: movieImage,
-                                              movieTitleText: data.title,
-                                              movieGenreText: "",
-                                              movieRatingText: data.voteAverage?.description)
-        return movieData
-    }
-    
-    func getSearchedPeopleData(index: Int) -> CellViewComponentData? {
-        guard index < searchedPeopleResults.count else {
-            return nil
-        }
-        let data = searchedPeopleResults[index]
-        let personImage = URL(string: data.posterPath ?? "")
-        let personData = CellViewComponentData(movieImage: personImage,
-                                               movieTitleText: data.name,
-                                               movieGenreText: "",
-                                               movieRatingText: data.popularity?.description)
-        return personData
-    }
-    
-    func getRawData(at index: Int) -> PopularMovie {
-        return popularMovie[index]
     }
     
     func getNumberOfItems(isSearchingEnabled: Bool,section: Int) -> Int? {
@@ -162,9 +127,5 @@ extension MainScreenFormatter: MainScreenFormatterInterface {
         return popularMovie[index].id?.description
     }
     
-    func getLottieAnimationComponentData() -> LottieAnimationComponentData {
-        let data = LottieAnimationComponentData(animation: .movieCameraAnimation, animationSpeed: 1.5)
-        return data
-    }
 }
 

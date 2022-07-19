@@ -10,12 +10,18 @@ import UIKit
 
 class CollectionViewCellViewComponent: DataBaseComponentView<CollectionViewCellViewComponentData> {
     
+    private lazy var containerView: UIView = {
+       let temp = UIView()
+        temp.translatesAutoresizingMaskIntoConstraints = false
+        return temp
+    }()
+    
     private lazy var roundedImage: UIImageView = {
         let temp = UIImageView()
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.clipsToBounds = true
-        temp.layer.masksToBounds = false
-        temp.contentMode = .scaleAspectFit
+        temp.contentMode = .scaleToFill
+        temp.layer.cornerRadius = 45
         return temp
     }()
     
@@ -35,18 +41,26 @@ class CollectionViewCellViewComponent: DataBaseComponentView<CollectionViewCellV
     }
     
     private func addComponents() {
-        addSubview(roundedImage)
-        addSubview(title)
+        addSubview(containerView)
+        containerView.addSubview(roundedImage)
+        containerView.addSubview(title)
         backgroundColor = ColorAsset.violetCrayola.value
+        layer.cornerRadius = 40
         NSLayoutConstraint.activate([
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: topAnchor),
 
-            roundedImage.centerXAnchor.constraint(equalTo: centerXAnchor),
-            roundedImage.bottomAnchor.constraint(equalTo: title.topAnchor),
+            roundedImage.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            roundedImage.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
+            roundedImage.bottomAnchor.constraint(equalTo: title.topAnchor, constant: -5),
+            roundedImage.bottomAnchor.constraint(equalTo: title.topAnchor, constant: -5),
+
             roundedImage.heightAnchor.constraint(equalToConstant: 100),
-            roundedImage.widthAnchor.constraint(equalToConstant: 85),
+            roundedImage.widthAnchor.constraint(equalToConstant: 100),
 
             title.centerXAnchor.constraint(equalTo: centerXAnchor),
-            title.bottomAnchor.constraint(equalTo: bottomAnchor),
 
         ])
     }

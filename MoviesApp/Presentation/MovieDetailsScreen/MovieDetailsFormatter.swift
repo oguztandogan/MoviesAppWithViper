@@ -29,17 +29,11 @@ extension MovieDetailsFormatter: MovieDetailsFormatterInterface {
     }
     
     func getMovieDetailsComponentData() -> MovieDetailsViewComponentData {
-        let imageViewData = getImageViewData(imageUrl: movieDetailsModel?.backdropPath)
-        let movieDetailsViewComponentData = MovieDetailsViewComponentData(imageViewData: imageViewData,
+        let movieDetailsViewComponentData = MovieDetailsViewComponentData(imageViewData: movieDetailsModel?.backdropPath,
                                                                           movieTitle: movieDetailsModel?.title,
                                                                           summary: movieDetailsModel?.overview,
                                                                           rating: movieDetailsModel?.voteAverage?.description)
         return movieDetailsViewComponentData
-    }
-    
-    private func getImageViewData(imageUrl: String?, cornerRadius: CGFloat? = 0) -> ImageViewComponentData {
-        let imageViewData = ImageViewComponentData(imageUrl: imageUrl, cornerRadius: cornerRadius)
-        return imageViewData
     }
     
     func getNumberOfCast() -> Int {

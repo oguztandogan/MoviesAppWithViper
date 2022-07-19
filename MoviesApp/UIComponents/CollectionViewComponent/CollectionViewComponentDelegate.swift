@@ -11,6 +11,5 @@ protocol CollectionViewComponentDelegate: AnyObject {
     
     func getItemCount() -> Int
     func getData(index: Int) -> GenericDataProtocol?
-//    func isLoadingCell(index: Int) -> Bool
     
 }

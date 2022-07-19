@@ -26,17 +26,14 @@ final class MovieDetailsViewController: BaseViewController, UIScrollViewDelegate
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 0.0
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.backgroundColor = ColorAsset.persianPink.value
         collection.delegate = self
         collection.dataSource = self
         collection.isScrollEnabled = true
-        collection.keyboardDismissMode = .onDrag
         collection.showsHorizontalScrollIndicator = false
         collection.genericRegisterCell(CollectionViewCell.self)
-        collection.genericRegisterCell(LoadingCellView.self)
         return collection
     }()
     
@@ -76,7 +73,7 @@ final class MovieDetailsViewController: BaseViewController, UIScrollViewDelegate
         containerView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = ColorAsset.persianPink.value
         containerView.backgroundColor = ColorAsset.persianPink.value
-        scrollView.contentSize = CGSize(width: view.frame.size.width, height: 1200)
+        view.backgroundColor = ColorAsset.persianPink.value
         view.addSubview(scrollView)
         scrollView.addSubview(containerView)
     }
@@ -90,29 +87,30 @@ final class MovieDetailsViewController: BaseViewController, UIScrollViewDelegate
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            scrollView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            containerView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            containerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             containerView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            containerView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
+            containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            movieDetailsComponent.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            movieDetailsComponent.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            movieDetailsComponent.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             movieDetailsComponent.topAnchor.constraint(equalTo: containerView.topAnchor),
-            movieDetailsComponent.widthAnchor.constraint(equalTo: containerView.widthAnchor),
-            movieDetailsComponent.heightAnchor.constraint(equalToConstant: 550),
+            movieDetailsComponent.bottomAnchor.constraint(equalTo: castCollectionView.topAnchor, constant: -25),
 
-            castCollectionView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            castCollectionView.topAnchor.constraint(equalTo: movieDetailsComponent.bottomAnchor, constant: 25),
-            castCollectionView.widthAnchor.constraint(equalTo: containerView.widthAnchor),
+            castCollectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            castCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             castCollectionView.heightAnchor.constraint(equalToConstant: 150),
+            castCollectionView.bottomAnchor.constraint(equalTo: videoViewComponent.topAnchor, constant: -20),
             
-            videoViewComponent.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            videoViewComponent.topAnchor.constraint(equalTo: castCollectionView.bottomAnchor, constant: 25),
-            videoViewComponent.widthAnchor.constraint(equalTo: containerView.widthAnchor),
+            videoViewComponent.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            videoViewComponent.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            videoViewComponent.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             videoViewComponent.heightAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 9/16),
 
         ])
