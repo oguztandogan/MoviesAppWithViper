@@ -124,12 +124,18 @@ extension MainScreenPresenter: MainScreenPresenterInterface {
 extension MainScreenPresenter: SearchBarComponentDelegate {
 
     
-    func getSearchBarText(searchText: String) {
 
-        getSearchResults(searchText: searchText)
-        isSearchingEnabled = true
-        eraseTableViewData()
-//        listDataState?(.done)
+    func getSearchBarText(searchText: String) {
+        if searchText == "" {
+            isSearchingEnabled = false
+            eraseTableViewData()
+            listDataState?(.done)
+        } else {
+            getSearchResults(searchText: searchText)
+            isSearchingEnabled = true
+            eraseTableViewData()
+        }
+
     }
     
     func cancelButtonClicked() {
@@ -138,17 +144,27 @@ extension MainScreenPresenter: SearchBarComponentDelegate {
         getPopularMovies()
     }
 
-    func textBeginEditing(didSearchBarTapped: Bool) {
+    func textBeginEditing(didSearchBarTapped: Bool, searchText: String?) {
 //        isSearchingEnabled = true
 //        listDataState?(.searching)
-        eraseTableViewData()
-        listDataState?(.done)
+        if searchText == "" {
+            eraseTableViewData()
+            listDataState?(.done)
+        } else {
+            
+        }
+//        eraseTableViewData()
+//        listDataState?(.done)
     }
 
-    func textFinishedEditing() {
+    func textFinishedEditing(searchText: String?) {
         //isSearchingEnabled = false
 //        isSearchingEnabled = true
-        eraseTableViewData()
+        if searchText == "" {
+            eraseTableViewData()
+            isSearchingEnabled = false
+
+        }
 //        listDataState?(.done)
     }
 }
