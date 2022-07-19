@@ -80,13 +80,12 @@ extension SearchBarComponent: UISearchBarDelegate {
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        delegate?.textBeginEditing(didSearchBarTapped: true)
+        delegate?.textBeginEditing(didSearchBarTapped: true, searchText: searchBar.text)
         searchBar.showsCancelButton = true
 
     }
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        delegate?.textFinishedEditing()
-//        searchBar.showsCancelButton = true
+        delegate?.textFinishedEditing(searchText: searchBar.text)
     }
 }
 
